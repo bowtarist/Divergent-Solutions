@@ -1,0 +1,15 @@
+{
+  "name": "divergent-solutions",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:website": "npm run dev -w apps/website",
+    "dev:app": "npm run dev -w apps/app",
+    "build:website": "npm run build -w apps/website",
+    "build:app": "npm run build -w apps/app",
+    "lint:website": "npm run lint -w apps/website",
+    "lint:app": "npm run lint -w apps/app"
+  }
+}

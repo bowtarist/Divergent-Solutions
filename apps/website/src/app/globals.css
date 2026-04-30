@@ -1,0 +1,155 @@
+:root {
+  --bg: #f6f0e6;
+  --paper: rgba(255, 252, 247, 0.84);
+  --ink: #1c1611;
+  --muted: #5d544b;
+  --line: rgba(28, 22, 17, 0.12);
+  --brand: #b85f2b;
+  --brand-dark: #7f3811;
+  --shadow: 0 24px 80px rgba(62, 35, 16, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(184, 95, 43, 0.16), transparent 24%),
+    radial-gradient(circle at right center, rgba(127, 56, 17, 0.12), transparent 20%),
+    linear-gradient(180deg, #fbf7f1 0%, var(--bg) 100%);
+  font-family: var(--font-sans), sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.shell {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 4rem 0 5rem;
+}
+
+.hero,
+.card {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow);
+}
+
+.hero {
+  padding: 4rem;
+  border-radius: 32px;
+}
+
+.eyebrow {
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.82rem;
+  color: var(--brand-dark);
+}
+
+.hero h1,
+.card h2 {
+  font-family: var(--font-serif), serif;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.hero h1 {
+  max-width: 12ch;
+  margin: 0;
+  font-size: clamp(3rem, 8vw, 6rem);
+}
+
+.lede,
+.card p,
+.card li {
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 1.05rem;
+}
+
+.lede {
+  max-width: 56rem;
+  margin: 1.5rem 0 0;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.button {
+  padding: 0.95rem 1.35rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.button.primary {
+  color: #fff9f3;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+}
+
+.button.secondary {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card {
+  padding: 2rem;
+  border-radius: 28px;
+}
+
+.card.accent {
+  background: linear-gradient(180deg, rgba(184, 95, 43, 0.1), rgba(255, 252, 247, 0.9));
+}
+
+.card.full {
+  margin-top: 1.5rem;
+}
+
+.card ul {
+  margin: 1rem 0 0;
+  padding-left: 1.2rem;
+}
+
+@media (max-width: 800px) {
+  .shell {
+    width: min(100% - 1.25rem, 1120px);
+    padding: 1.25rem 0 3rem;
+  }
+
+  .hero,
+  .card {
+    border-radius: 24px;
+  }
+
+  .hero {
+    padding: 2rem 1.25rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
