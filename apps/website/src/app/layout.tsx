@@ -13,8 +13,9 @@ const serif = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: "Brent Construction",
-  description: "Public website scaffold for Brent Construction.",
+  title: "Divergent Solutions | Quality Gutter Installation",
+  description:
+    "Quality-first gutter installation for homeowners and builders across Scottsboro, Huntsville, Gadsden, Fort Payne, Winchester, and Trenton.",
 };
 
 export default function RootLayout({
