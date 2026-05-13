@@ -2,9 +2,11 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { describe, it } from "node:test";
+import { fileURLToPath } from "node:url";
 import site from "./site.json" with { type: "json" };
 
-const publicDir = path.resolve(process.cwd(), "public");
+const contentDir = path.dirname(fileURLToPath(import.meta.url));
+const publicDir = path.resolve(contentDir, "../../public");
 
 function publicPathExists(publicPath) {
   return existsSync(path.join(publicDir, publicPath.replace(/^\//, "")));
