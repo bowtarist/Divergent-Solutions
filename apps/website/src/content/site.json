@@ -1,0 +1,103 @@
+{
+  "brand": "Divergent Solutions",
+  "domain": "www.divergentsolutionsllc.com",
+  "primaryCta": "Request a Quote",
+  "hero": {
+    "eyebrow": "Licensed and insured gutter installation",
+    "headline": "Built around a better install process.",
+    "body": "Quality-first gutter installation for homeowners and builders, with clear quotes, dependable follow-through, and a callback within one business day.",
+    "primaryImage": "/images/projects/scottsboro-new-construction-house.jpg",
+    "secondaryCta": "See Our Work"
+  },
+  "serviceArea": {
+    "intro": "Serving homeowners and builders across the regional service area.",
+    "cities": ["Scottsboro", "Huntsville", "Gadsden", "Fort Payne", "Winchester", "Trenton"]
+  },
+  "proof": [
+    { "value": "30", "label": "Years combined experience" },
+    { "value": "2yr", "label": "Labor warranty" },
+    { "value": "1", "label": "Business day callback" },
+    { "value": "5.0", "label": "Google review rating" }
+  ],
+  "process": {
+    "headline": "Measure carefully. Quote clearly. Install cleanly. Follow up.",
+    "steps": [
+      { "label": "01 Request", "body": "Send your project details and photos through the quote form." },
+      { "label": "02 Call", "body": "We call within one business day to understand the project." },
+      { "label": "03 Quote", "body": "Your quote is based on actual details, not rushed guesses." },
+      { "label": "04 Install", "body": "We install with quality standards and follow up afterward." }
+    ]
+  },
+  "services": [
+    { "title": "Gutter Installation", "primary": true, "body": "Quality-first gutter installs for homeowners, builders, new construction, and exterior projects." },
+    { "title": "Gutter Guards", "primary": false, "body": "Guard options that help reduce debris buildup and support long-term gutter performance." },
+    { "title": "Gutter Repairs", "primary": false, "body": "Repair support for damaged, leaking, or poorly performing gutter sections." },
+    { "title": "Fascia & Soffit", "primary": false, "body": "Exterior trim work that supports a clean, finished, durable gutter installation." },
+    { "title": "Siding", "primary": false, "body": "Siding support for exterior projects where the gutter work connects to broader improvements." },
+    { "title": "New Construction", "primary": false, "body": "Reliable gutter installation for builders and new home projects." },
+    { "title": "Home Renovations", "primary": false, "body": "Exterior renovation support when the project needs more than gutter installation." }
+  ],
+  "reviews": [
+    {
+      "author": "Brent W.",
+      "source": "Google Review",
+      "quote": "I had my gutters replaced by Divergent Solutions. They did an amazing job. They were there when they said they would be and are very professional."
+    },
+    {
+      "author": "Ashley J.",
+      "source": "Google Review",
+      "quote": "They showed up when they said they would, performed super quality work and were professional all the way around!"
+    },
+    {
+      "author": "Ashtin M.",
+      "source": "Google Review",
+      "quote": "The owner was honest, easy to work with, and made sure everything was done right. The gutters look great and have held up beautifully."
+    }
+  ],
+  "projects": [
+    {
+      "title": "Scottsboro new construction",
+      "role": "Homepage hero",
+      "image": "/images/projects/scottsboro-new-construction-house.jpg",
+      "body": "Builder and new-construction credibility for the first impression."
+    },
+    {
+      "title": "Woodville finished residential",
+      "role": "Residential proof",
+      "image": "/images/projects/woodville-after.jpg",
+      "body": "Finished homeowner-facing quality and curb appeal."
+    },
+    {
+      "title": "Stevenson Church",
+      "role": "Larger-project proof",
+      "image": "/images/projects/stevenson-church-after.jpg",
+      "body": "Larger-project capability and broader installation credibility."
+    },
+    {
+      "title": "House 1",
+      "role": "Whole-home install",
+      "image": "/images/projects/house-1-after.jpg",
+      "body": "Whole-home gutter scope for a regional residential project."
+    },
+    {
+      "title": "House 2",
+      "role": "Gallery support",
+      "image": "/images/projects/house-2-after.jpg",
+      "body": "Additional before-and-after gallery support."
+    }
+  ],
+  "warranty": {
+    "headline": "2-year labor warranty",
+    "body": "Our gutter installations include a 2-year labor warranty covering installation workmanship. The warranty does not cover outside damage such as roof leaks, mower damage, tree damage, storm damage, or other issues unrelated to the installation."
+  },
+  "about": {
+    "headline": "Founded by Seth Talley and Brent Wilbanks.",
+    "body": "Divergent Solutions brings a combined 30 years of construction industry experience to every project. Our emphasis is simple: quality work and customer service. If an issue ever comes up, we go above and beyond to make it right, and we follow up with our customers to make sure they remain completely satisfied."
+  },
+  "quote": {
+    "submitText": "Submit Quote Request",
+    "confirmationMessage": "Thanks. We received your request and will call you back within 1 business day.",
+    "requiredFields": ["name", "phone", "email", "projectAddress", "city", "customerType", "projectType", "projectNotes"],
+    "optionalFields": ["bestTimeToCall", "propertyType", "timeline", "photos"]
+  }
+}
