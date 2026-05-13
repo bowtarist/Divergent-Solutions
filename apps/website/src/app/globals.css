@@ -458,3 +458,55 @@ h3 {
     border-bottom: 1px solid var(--line);
   }
 }
+
+.service-list,
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.service-item,
+.review-card {
+  margin: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.primary-service {
+  border-color: rgba(169, 42, 42, 0.38);
+  background: rgba(223, 231, 220, 0.36);
+}
+
+.service-item h2,
+.page-copy h2 {
+  margin: 0 0 0.625rem;
+  color: var(--green);
+  font-size: 1.75rem;
+  line-height: 1.05;
+}
+
+.review-card blockquote {
+  margin: 0;
+  font-family: var(--font-serif), serif;
+  font-size: 1.45rem;
+  line-height: 1.35;
+}
+
+.review-card figcaption {
+  margin-top: 1rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 780px) {
+  .service-list,
+  .review-grid {
+    grid-template-columns: 1fr;
+  }
+}
