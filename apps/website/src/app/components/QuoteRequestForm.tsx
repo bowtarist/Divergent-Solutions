@@ -30,6 +30,7 @@ export function QuoteRequestForm() {
       timeline: String(formData.get("timeline") ?? ""),
       bestTimeToCall: String(formData.get("bestTimeToCall") ?? ""),
       projectNotes: String(formData.get("projectNotes") ?? ""),
+      companyWebsite: String(formData.get("companyWebsite") ?? ""),
       photoNames: formData
         .getAll("photos")
         .map((file) => (file instanceof File ? file.name : String(file))),
@@ -144,6 +145,10 @@ export function QuoteRequestForm() {
           <input name="bestTimeToCall" />
         </label>
       </div>
+      <label className="honeypot-field" aria-hidden="true">
+        Company website
+        <input name="companyWebsite" tabIndex={-1} autoComplete="off" />
+      </label>
       <label>
         Project notes
         <textarea name="projectNotes" required rows={5} />
@@ -156,7 +161,11 @@ export function QuoteRequestForm() {
       <button className="button primary" type="submit" disabled={state === "submitting"}>
         {state === "submitting" ? "Submitting..." : site.quote.submitText}
       </button>
-      {message ? <p className={`form-message ${state}`}>{message}</p> : null}
+      {message ? (
+        <p className={`form-message ${state}`} role={state === "success" ? "status" : "alert"}>
+          {message}
+        </p>
+      ) : null}
     </form>
   );
 }
