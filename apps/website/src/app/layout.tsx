@@ -13,9 +13,9 @@ const serif = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: "Divergent Solutions | Quality Gutter Installation",
+  title: "Divergent Solutions | Quality Gutter Installation in Scottsboro, AL",
   description:
-    "Quality-first gutter installation for homeowners and builders across Scottsboro, Huntsville, Gadsden, Fort Payne, Winchester, and Trenton.",
+    "Licensed and insured gutter installation, repair, guards, fascia, soffit, siding, renovations, and new construction support across North Alabama, Tennessee, and Georgia.",
 };
 
 export default function RootLayout({
