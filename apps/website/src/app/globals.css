@@ -510,3 +510,76 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+
+.quote-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.quote-form label {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--green);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.quote-form input,
+.quote-form select,
+.quote-form textarea {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  padding: 0.75rem;
+  color: var(--ink);
+  background: #fff;
+  font: inherit;
+  letter-spacing: 0;
+}
+
+.quote-form textarea {
+  resize: vertical;
+}
+
+.field-help {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.form-message {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.form-message.success {
+  border-color: rgba(36, 58, 48, 0.28);
+  color: var(--green);
+  background: rgba(223, 231, 220, 0.45);
+}
+
+.form-message.error {
+  border-color: rgba(169, 42, 42, 0.35);
+  color: var(--red);
+  background: rgba(169, 42, 42, 0.08);
+}
+
+@media (max-width: 760px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
