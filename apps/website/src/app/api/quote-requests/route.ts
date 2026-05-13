@@ -77,20 +77,26 @@ export async function POST(request: Request) {
     );
   }
 
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${secret}`,
-    },
-    body: JSON.stringify({
-      source: "Website",
-      status: "New Web Lead",
-      callReminder: "Call new website lead",
-      submittedAt: new Date().toISOString(),
-      ...parsed.payload,
-    }),
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${secret}`,
+      },
+      body: JSON.stringify({
+        source: "Website",
+        status: "New Web Lead",
+        callReminder: "Call new website lead",
+        submittedAt: new Date().toISOString(),
+        ...parsed.payload,
+      }),
+    });
+  } catch {
+    return NextResponse.json({ ok: false, error: "Lead forwarding failed." }, { status: 502 });
+  }
 
   if (!response.ok) {
     return NextResponse.json({ ok: false, error: "Lead forwarding failed." }, { status: 502 });

@@ -5,6 +5,9 @@ import site from "@/content/site.json";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
 
+const callFallbackMessage =
+  "The quote form is not connected yet. Please call Divergent Solutions directly while we finish lead intake setup.";
+
 export function QuoteRequestForm() {
   const [state, setState] = useState<SubmitState>("idle");
   const [message, setMessage] = useState("");
@@ -32,11 +35,19 @@ export function QuoteRequestForm() {
         .map((file) => (file instanceof File ? file.name : String(file))),
     };
 
-    const response = await fetch("/api/quote-requests", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    let response: Response;
+
+    try {
+      response = await fetch("/api/quote-requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } catch {
+      setState("error");
+      setMessage(callFallbackMessage);
+      return;
+    }
 
     if (response.ok) {
       setState("success");
@@ -47,8 +58,8 @@ export function QuoteRequestForm() {
 
     setState("error");
     setMessage(
-      response.status === 503
-        ? "The quote form is not connected yet. Please call Divergent Solutions directly while we finish lead intake setup."
+      response.status === 503 || response.status === 502
+        ? callFallbackMessage
         : "Please check the required fields and try again."
     );
   }
