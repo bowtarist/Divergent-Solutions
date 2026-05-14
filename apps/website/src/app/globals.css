@@ -586,6 +586,13 @@ h3 {
   background: rgba(169, 42, 42, 0.08);
 }
 
+.form-message-link {
+  color: inherit;
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
 @media (max-width: 760px) {
   .form-grid {
     grid-template-columns: 1fr;

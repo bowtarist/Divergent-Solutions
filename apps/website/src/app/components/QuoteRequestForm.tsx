@@ -164,6 +164,14 @@ export function QuoteRequestForm() {
       {message ? (
         <p className={`form-message ${state}`} role={state === "success" ? "status" : "alert"}>
           {message}
+          {state === "error" && message === callFallbackMessage ? (
+            <>
+              {" "}
+              <a className="form-message-link" href={`tel:${site.contact.phoneTel}`}>
+                Call {site.contact.phoneDisplay}
+              </a>
+            </>
+          ) : null}
         </p>
       ) : null}
     </form>

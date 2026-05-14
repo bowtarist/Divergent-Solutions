@@ -2,6 +2,10 @@
   "brand": "Divergent Solutions",
   "domain": "www.divergentsolutionsllc.com",
   "primaryCta": "Request a Quote",
+  "contact": {
+    "phoneDisplay": "(256) 212-0232",
+    "phoneTel": "+12562120232"
+  },
   "hero": {
     "eyebrow": "Licensed and insured gutter installation",
     "headline": "Built around a better install process.",

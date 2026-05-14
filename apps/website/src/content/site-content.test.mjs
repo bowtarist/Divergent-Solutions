@@ -25,6 +25,12 @@ describe("public website launch content", () => {
     assert.match(site.quote.confirmationMessage, /within 1 business day/i);
   });
 
+  it("keeps the approved public phone contact clickable", () => {
+    assert.equal(site.contact.phoneDisplay, "(256) 212-0232");
+    assert.equal(site.contact.phoneTel, "+12562120232");
+    assert.match(site.contact.phoneTel, /^\+\d{11}$/);
+  });
+
   it("actively advertises every approved service city", () => {
     assert.deepEqual(site.serviceArea.cities, [
       "Scottsboro",
