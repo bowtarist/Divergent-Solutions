@@ -1,18 +1,19 @@
 # Divergent Solutions
 
-This repository is the new home for the Divergent Solutions buildout for Brent Construction.
+This repository is the home for the Divergent Solutions public website and private operations app.
 
 ## Current Scope
 
 - `brainstorming/`: planning documents, roadmap notes, and business thinking
-- `apps/website/`: future public marketing site for `www.<domain>`
-- `apps/app/`: future private operations app for `app.<domain>`
+- `apps/website/`: public marketing site for `www.divergentsolutionsllc.com`
+- `apps/app/`: private operations app for `app.divergentsolutionsllc.com`
 - `docs/`: deployment and environment setup notes
+- `supabase/`: database migration files
 
 ## Phase Status
 
-- Phases 1-5: business, machine, GitHub, and repository setup
-- Phase 6: Vercel preparation and deployment setup
+- Public website launch build is in progress.
+- First private-app lead intake slice is in progress.
 
 ## Planned Architecture
 
@@ -23,6 +24,27 @@ This repository is the new home for the Divergent Solutions buildout for Brent C
 - Supabase for database, auth, and storage
 - Stripe for payments
 
-## Next Build Decision
+## Lead Intake
 
-Before scaffolding code, we need to choose the framework direction for `apps/website` and `apps/app`.
+The public website posts validated quote requests to the private app endpoint:
+
+`POST https://app.divergentsolutionsllc.com/api/website-leads`
+
+The private app creates a raw `leads` row in Supabase with:
+
+- `source = website`
+- `status = new`
+- `call_status = open`
+- a next-business-day call reminder due by 5:00 PM Central
+
+Day-one intake intentionally does not create customers or jobs. Brent or Seth qualifies a lead later before it becomes real customer/job workflow data.
+
+Required environment variables:
+
+- Website: `PRIVATE_APP_LEADS_ENDPOINT`
+- Website: `PRIVATE_APP_LEADS_SECRET`
+- Private app: `PRIVATE_APP_LEADS_SECRET`
+- Private app: `SUPABASE_URL`
+- Private app: `SUPABASE_SERVICE_ROLE_KEY`
+
+The same `PRIVATE_APP_LEADS_SECRET` value must be configured on both apps.
