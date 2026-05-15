@@ -6,6 +6,19 @@ export type LeadStorageEnv = {
   SUPABASE_SERVICE_ROLE_KEY?: string;
 };
 
+export const testLeadCleanupNames = [
+  "Connection Test",
+  "Website Connection Test",
+  "Final Website Test",
+  "Post Cleanup Website Test",
+] as const;
+
+export type CleanedTestLead = {
+  id: string;
+  name: string | null;
+  email: string | null;
+};
+
 export class MissingLeadIntakeStorageConfigError extends Error {
   constructor() {
     super("Lead intake storage is not configured.");
@@ -57,5 +70,41 @@ export function createSupabaseLeadInserter(env?: LeadStorageEnv) {
     }
 
     return { id: String(data.id) };
+  };
+}
+
+export function createSupabaseTestLeadCleaner(env?: LeadStorageEnv) {
+  const storageEnv = getStorageEnv(env);
+  const supabaseUrl = storageEnv.SUPABASE_URL;
+  const serviceRoleKey = storageEnv.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new MissingLeadIntakeStorageConfigError();
+  }
+
+  const supabase = createClient(supabaseUrl, serviceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+
+  return async function cleanupTestLeads(): Promise<CleanedTestLead[]> {
+    const { data, error } = await supabase
+      .from("leads")
+      .delete()
+      .eq("email", "test@example.com")
+      .in("name", [...testLeadCleanupNames])
+      .select("id,name,email");
+
+    if (error) {
+      throw new LeadIntakeStorageError(error.message);
+    }
+
+    return (data ?? []).map((lead) => ({
+      id: String(lead.id),
+      name: typeof lead.name === "string" ? lead.name : null,
+      email: typeof lead.email === "string" ? lead.email : null,
+    }));
   };
 }
