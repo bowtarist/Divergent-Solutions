@@ -42,6 +42,7 @@ test("maps a website quote request into a raw lead insert", () => {
   assert.equal(insert.source, "website");
   assert.equal(insert.status, "new");
   assert.equal(insert.call_status, "open");
+  assert.equal(insert.name, "Brent Wilbanks");
   assert.equal(insert.contact_name, "Brent Wilbanks");
   assert.equal(insert.first_name, "Brent");
   assert.equal(insert.last_name, "Wilbanks");
@@ -71,6 +72,7 @@ test("preserves single-word contact names without inventing a last name", () => 
 
   const insert = mapWebsiteLeadToInsert(parsed.payload, new Date("2026-05-13T16:00:00.000-05:00"));
 
+  assert.equal(insert.name, "Ashley");
   assert.equal(insert.contact_name, "Ashley");
   assert.equal(insert.first_name, "Ashley");
   assert.equal(insert.last_name, null);

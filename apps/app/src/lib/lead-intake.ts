@@ -30,6 +30,7 @@ export type LeadInsert = {
   source: "website";
   status: "new";
   call_status: "open";
+  name: string;
   contact_name: string;
   first_name: string;
   last_name: string | null;
@@ -229,6 +230,7 @@ export function mapWebsiteLeadToInsert(payload: WebsiteLeadPayload, now = new Da
     source: "website",
     status: "new",
     call_status: "open",
+    name: payload.name,
     contact_name: payload.name,
     first_name: firstName,
     last_name: lastName,
