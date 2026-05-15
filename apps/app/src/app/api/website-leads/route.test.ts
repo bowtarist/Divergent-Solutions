@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { handleWebsiteLeadRequest } from "./route";
+import { LeadIntakeStorageError } from "../../../lib/supabase-server";
 import type { LeadInsert } from "../../../lib/lead-intake";
+import { handleWebsiteLeadRequest } from "./route";
 
 const validPayload = {
   source: "Website",
@@ -107,4 +108,20 @@ test("inserts a valid website lead and returns the lead id", async () => {
   assert.equal(insertedLead?.call_status, "open");
   assert.equal(insertedLead?.contact_name, "Brent Wilbanks");
   assert.equal(insertedLead?.call_reminder_due_at, "2026-05-14T22:00:00.000Z");
+});
+
+test("reports authenticated storage errors for diagnostics", async () => {
+  const response = await handleWebsiteLeadRequest(requestFor(validPayload, "secret"), {
+    env: { PRIVATE_APP_LEADS_SECRET: "secret" },
+    insertLead: async () => {
+      throw new LeadIntakeStorageError("database rejected the lead");
+    },
+  });
+
+  assert.equal(response.status, 502);
+  assert.deepEqual(await response.json(), {
+    ok: false,
+    error: "Lead intake storage failed.",
+    storageError: "database rejected the lead",
+  });
 });

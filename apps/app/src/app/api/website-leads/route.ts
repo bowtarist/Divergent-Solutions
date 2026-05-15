@@ -106,9 +106,7 @@ export async function handleWebsiteLeadRequest(
     });
   } catch (error) {
     const storageError =
-      error instanceof LeadIntakeStorageError && process.env.LEAD_INTAKE_DEBUG === "true"
-        ? error.message
-        : undefined;
+      error instanceof LeadIntakeStorageError ? error.message : undefined;
 
     return jsonResponse(
       { ok: false, error: "Lead intake storage failed.", storageError },
