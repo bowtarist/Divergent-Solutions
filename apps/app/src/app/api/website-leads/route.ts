@@ -5,7 +5,6 @@ import {
 } from "../../../lib/lead-intake";
 import {
   createSupabaseLeadInserter,
-  LeadIntakeStorageError,
   MissingLeadIntakeStorageConfigError,
   type LeadStorageEnv,
 } from "../../../lib/supabase-server";
@@ -104,14 +103,8 @@ export async function handleWebsiteLeadRequest(
       leadId: result.id,
       callReminderDueAt: lead.call_reminder_due_at,
     });
-  } catch (error) {
-    const storageError =
-      error instanceof LeadIntakeStorageError ? error.message : undefined;
-
-    return jsonResponse(
-      { ok: false, error: "Lead intake storage failed.", storageError },
-      502
-    );
+  } catch {
+    return jsonResponse({ ok: false, error: "Lead intake storage failed." }, 502);
   }
 }
 

@@ -110,7 +110,7 @@ test("inserts a valid website lead and returns the lead id", async () => {
   assert.equal(insertedLead?.call_reminder_due_at, "2026-05-14T22:00:00.000Z");
 });
 
-test("reports authenticated storage errors for diagnostics", async () => {
+test("hides authenticated storage error details from API responses", async () => {
   const response = await handleWebsiteLeadRequest(requestFor(validPayload, "secret"), {
     env: { PRIVATE_APP_LEADS_SECRET: "secret" },
     insertLead: async () => {
@@ -122,6 +122,5 @@ test("reports authenticated storage errors for diagnostics", async () => {
   assert.deepEqual(await response.json(), {
     ok: false,
     error: "Lead intake storage failed.",
-    storageError: "database rejected the lead",
   });
 });
