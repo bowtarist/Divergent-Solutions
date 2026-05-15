@@ -13,6 +13,13 @@ export class MissingLeadIntakeStorageConfigError extends Error {
   }
 }
 
+export class LeadIntakeStorageError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "LeadIntakeStorageError";
+  }
+}
+
 function getStorageEnv(env?: LeadStorageEnv): LeadStorageEnv {
   return (
     env ?? {
@@ -42,11 +49,11 @@ export function createSupabaseLeadInserter(env?: LeadStorageEnv) {
     const { data, error } = await supabase.from("leads").insert(lead).select("id").single();
 
     if (error) {
-      throw error;
+      throw new LeadIntakeStorageError(error.message);
     }
 
     if (!data?.id) {
-      throw new Error("Lead intake storage did not return a lead id.");
+      throw new LeadIntakeStorageError("Lead intake storage did not return a lead id.");
     }
 
     return { id: String(data.id) };
