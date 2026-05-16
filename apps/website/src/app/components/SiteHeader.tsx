@@ -22,9 +22,14 @@ export function SiteHeader() {
           </Link>
         ))}
       </nav>
-      <Link className="nav-cta" href="/request-a-quote">
-        {site.primaryCta}
-      </Link>
+      <div className="header-actions">
+        <a className="phone-link nav-phone" href={`tel:${site.contact.phoneTel}`}>
+          Call {site.contact.phoneDisplay}
+        </a>
+        <Link className="nav-cta" href="/request-a-quote">
+          {site.primaryCta}
+        </Link>
+      </div>
     </header>
   );
 }

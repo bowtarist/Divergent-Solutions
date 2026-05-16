@@ -79,6 +79,28 @@ h3 {
   text-transform: uppercase;
 }
 
+.header-actions,
+.footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.phone-link {
+  color: var(--green);
+  font-weight: 900;
+  text-decoration: underline;
+  text-decoration-color: rgba(169, 42, 42, 0.35);
+  text-underline-offset: 0.22em;
+}
+
+.nav-phone {
+  white-space: nowrap;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .nav-cta,
 .button {
   display: inline-flex;
@@ -373,6 +395,17 @@ h3 {
   background: #fffdf7;
 }
 
+.footer-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.footer-phone {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
 @media (max-width: 980px) {
   .site-header {
     flex-wrap: wrap;
@@ -384,6 +417,10 @@ h3 {
     width: 100%;
     flex-wrap: wrap;
     gap: 0.75rem 1rem;
+  }
+
+  .header-actions {
+    margin-left: auto;
   }
 
   .hero,
@@ -418,6 +455,26 @@ h3 {
 
   .site-header {
     gap: 0.875rem;
+  }
+
+  .header-actions,
+  .footer-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .header-actions > *,
+  .footer-actions > * {
+    flex: 1 1 100%;
+  }
+
+  .nav-phone,
+  .footer-phone {
+    justify-content: center;
+    min-height: 40px;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid rgba(36, 58, 48, 0.16);
+    background: rgba(255, 255, 255, 0.66);
   }
 
   .site-nav {
@@ -515,6 +572,15 @@ h3 {
   display: grid;
   gap: 1rem;
   margin-top: 2rem;
+}
+
+.quote-callout {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid rgba(36, 58, 48, 0.18);
+  color: var(--green);
+  background: rgba(223, 231, 220, 0.36);
+  line-height: 1.45;
 }
 
 .form-grid {

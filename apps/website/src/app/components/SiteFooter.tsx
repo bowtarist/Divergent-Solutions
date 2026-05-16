@@ -9,9 +9,14 @@ export function SiteFooter() {
         <h2>Ready to talk through your gutter project?</h2>
         <p>Send the details and photos. Divergent Solutions will call back within one business day.</p>
       </div>
-      <Link className="button primary" href="/request-a-quote">
-        {site.primaryCta}
-      </Link>
+      <div className="footer-actions">
+        <a className="phone-link footer-phone" href={`tel:${site.contact.phoneTel}`}>
+          Call {site.contact.phoneDisplay}
+        </a>
+        <Link className="button primary" href="/request-a-quote">
+          {site.primaryCta}
+        </Link>
+      </div>
     </footer>
   );
 }

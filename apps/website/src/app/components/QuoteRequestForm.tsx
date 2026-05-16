@@ -67,6 +67,12 @@ export function QuoteRequestForm() {
 
   return (
     <form className="quote-form" onSubmit={handleSubmit}>
+      <p className="quote-callout">
+        Prefer to talk it through?{" "}
+        <a className="phone-link" href={`tel:${site.contact.phoneTel}`}>
+          Call {site.contact.phoneDisplay}
+        </a>
+      </p>
       <div className="form-grid">
         <label>
           Name

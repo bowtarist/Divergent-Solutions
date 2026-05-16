@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "test": "node --test src/content/*.test.mjs"
+    "test": "node --import tsx --test src/content/*.test.mjs src/**/*.test.tsx"
   },
   "dependencies": {
     "next": "^16.0.0",
