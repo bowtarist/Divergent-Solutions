@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import type { LeadInsert } from "./lead-intake";
+import type { RawLeadRecord } from "./lead-dashboard";
 
 export type LeadStorageEnv = {
   SUPABASE_URL?: string;
@@ -17,6 +18,13 @@ export class LeadIntakeStorageError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "LeadIntakeStorageError";
+  }
+}
+
+export class LeadDashboardStorageError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "LeadDashboardStorageError";
   }
 }
 
@@ -57,5 +65,58 @@ export function createSupabaseLeadInserter(env?: LeadStorageEnv) {
     }
 
     return { id: String(data.id) };
+  };
+}
+
+export function createSupabaseLeadReader(env?: LeadStorageEnv) {
+  const storageEnv = getStorageEnv(env);
+  const supabaseUrl = storageEnv.SUPABASE_URL;
+  const serviceRoleKey = storageEnv.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new MissingLeadIntakeStorageConfigError();
+  }
+
+  const supabase = createClient(supabaseUrl, serviceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+
+  return async function getLatestWebsiteLeads(limit = 50) {
+    const { data, error } = await supabase
+      .from("leads")
+      .select(
+        [
+          "id",
+          "status",
+          "call_status",
+          "source",
+          "name",
+          "contact_name",
+          "phone",
+          "email",
+          "project_type",
+          "project_description",
+          "preferred_timing",
+          "initial_service_address_text",
+          "service_city",
+          "customer_type",
+          "property_type",
+          "submitted_at",
+          "call_reminder_due_at",
+          "metadata",
+        ].join(",")
+      )
+      .eq("source", "website")
+      .order("submitted_at", { ascending: false })
+      .limit(limit);
+
+    if (error) {
+      throw new LeadDashboardStorageError(error.message);
+    }
+
+    return (data ?? []) as unknown as RawLeadRecord[];
   };
 }

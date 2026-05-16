@@ -12,6 +12,9 @@ export default function AppHomePage() {
         <div>
           <p className="eyebrow">Private Operations App</p>
           <h1>One calm control panel for the real work behind Brent Construction.</h1>
+          <a className="primary-link" href="/leads">
+            Open lead dashboard
+          </a>
         </div>
         <div className="status">
           <span className="status-dot" />
