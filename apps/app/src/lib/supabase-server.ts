@@ -1,6 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 import type { LeadInsert } from "./lead-intake";
 import type { RawLeadRecord } from "./lead-dashboard";
+import {
+  addInternalNoteToMetadata,
+  createLeadStatusUpdate,
+  type LeadStatus,
+} from "./lead-workflow";
 
 export type LeadStorageEnv = {
   SUPABASE_URL?: string;
@@ -118,5 +123,73 @@ export function createSupabaseLeadReader(env?: LeadStorageEnv) {
     }
 
     return (data ?? []) as unknown as RawLeadRecord[];
+  };
+}
+
+export function createSupabaseLeadWorkflowUpdater(env?: LeadStorageEnv) {
+  const storageEnv = getStorageEnv(env);
+  const supabaseUrl = storageEnv.SUPABASE_URL;
+  const serviceRoleKey = storageEnv.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new MissingLeadIntakeStorageConfigError();
+  }
+
+  const supabase = createClient(supabaseUrl, serviceRoleKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+
+  return {
+    async updateLeadStatus(leadId: string, status: LeadStatus) {
+      const { data, error } = await supabase
+        .from("leads")
+        .update(createLeadStatusUpdate(status))
+        .eq("id", leadId)
+        .select("id")
+        .single();
+
+      if (error) {
+        throw new LeadDashboardStorageError(error.message);
+      }
+
+      if (!data?.id) {
+        throw new LeadDashboardStorageError("Lead status update did not return a lead id.");
+      }
+    },
+
+    async addInternalNote(leadId: string, noteText: string) {
+      const { data, error: readError } = await supabase
+        .from("leads")
+        .select("metadata")
+        .eq("id", leadId)
+        .single();
+
+      if (readError) {
+        throw new LeadDashboardStorageError(readError.message);
+      }
+
+      const nextMetadata = addInternalNoteToMetadata(
+        (data as { metadata?: unknown } | null)?.metadata,
+        noteText
+      );
+
+      const { data: updatedLead, error: updateError } = await supabase
+        .from("leads")
+        .update({ metadata: nextMetadata })
+        .eq("id", leadId)
+        .select("id")
+        .single();
+
+      if (updateError) {
+        throw new LeadDashboardStorageError(updateError.message);
+      }
+
+      if (!updatedLead?.id) {
+        throw new LeadDashboardStorageError("Lead note update did not return a lead id.");
+      }
+    },
   };
 }

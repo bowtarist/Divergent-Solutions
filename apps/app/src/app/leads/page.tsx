@@ -6,11 +6,13 @@ import {
   isValidDashboardSessionToken,
 } from "../../lib/dashboard-auth";
 import { normalizeLeadRecord, type DashboardLead } from "../../lib/lead-dashboard";
+import { leadStatusOptions } from "../../lib/lead-workflow";
 import {
   createSupabaseLeadReader,
   LeadDashboardStorageError,
   MissingLeadIntakeStorageConfigError,
 } from "../../lib/supabase-server";
+import { addInternalNoteAction, updateLeadStatusAction } from "./actions";
 
 export const dynamic = "force-dynamic";
 
@@ -64,6 +66,23 @@ function LeadCard({ lead }: { lead: DashboardLead }) {
         <ContactAction href={lead.emailHref}>Email {lead.email ?? "No email"}</ContactAction>
       </div>
 
+      <form className="status-form" action={updateLeadStatusAction}>
+        <input type="hidden" name="leadId" value={lead.id} />
+        {leadStatusOptions.map((status) => (
+          <button
+            key={status.value}
+            className={
+              lead.status === status.value ? "status-button status-button-active" : "status-button"
+            }
+            name="status"
+            type="submit"
+            value={status.value}
+          >
+            {status.label}
+          </button>
+        ))}
+      </form>
+
       <dl className="lead-details">
         <div>
           <dt>Project</dt>
@@ -80,7 +99,7 @@ function LeadCard({ lead }: { lead: DashboardLead }) {
         <div>
           <dt>Customer</dt>
           <dd>
-            {lead.customerType} · {lead.propertyType}
+            {lead.customerType} - {lead.propertyType}
           </dd>
         </div>
         <div>
@@ -90,7 +109,7 @@ function LeadCard({ lead }: { lead: DashboardLead }) {
         <div>
           <dt>Call reminder</dt>
           <dd>
-            {lead.callReminderLabel} · {lead.callStatusLabel}
+            {lead.callReminderLabel} - {lead.callStatusLabel}
           </dd>
         </div>
       </dl>
@@ -108,6 +127,27 @@ function LeadCard({ lead }: { lead: DashboardLead }) {
           ))}
         </div>
       ) : null}
+
+      <div className="internal-notes">
+        <h3>Internal notes</h3>
+        {lead.internalNotes.length > 0 ? (
+          <div className="note-list">
+            {lead.internalNotes.map((note) => (
+              <div key={`${note.createdAtLabel}-${note.text}`} className="note-card">
+                <p>{note.text}</p>
+                <span>{note.createdAtLabel}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="muted">No internal notes yet.</p>
+        )}
+        <form className="note-form" action={addInternalNoteAction}>
+          <input type="hidden" name="leadId" value={lead.id} />
+          <textarea name="note" placeholder="Add a call note or next step" rows={3} />
+          <button type="submit">Add note</button>
+        </form>
+      </div>
     </article>
   );
 }

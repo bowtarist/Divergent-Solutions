@@ -1,3 +1,5 @@
+import { getInternalNotes, parseLeadStatus, type LeadStatus } from "./lead-workflow";
+
 const centralTimeZone = "America/Chicago";
 
 export type RawLeadRecord = {
@@ -23,6 +25,7 @@ export type RawLeadRecord = {
 
 export type DashboardLead = {
   id: string;
+  status: LeadStatus | null;
   name: string;
   phone: string | null;
   phoneHref: string | null;
@@ -42,6 +45,12 @@ export type DashboardLead = {
   callReminderLabel: string;
   isCallDue: boolean;
   photoNames: string[];
+  internalNotes: DashboardInternalNote[];
+};
+
+export type DashboardInternalNote = {
+  text: string;
+  createdAtLabel: string;
 };
 
 function valueOrFallback(value: string | null | undefined, fallback: string) {
@@ -132,6 +141,7 @@ export function normalizeLeadRecord(record: RawLeadRecord, now = new Date()): Da
 
   return {
     id: record.id,
+    status: parseLeadStatus(record.status),
     name: valueOrFallback(record.name ?? record.contact_name, "Unnamed lead"),
     phone,
     phoneHref: getPhoneHref(phone),
@@ -151,5 +161,9 @@ export function normalizeLeadRecord(record: RawLeadRecord, now = new Date()): Da
     callReminderLabel: formatCentralDateTime(record.call_reminder_due_at),
     isCallDue: isCallDue(record.call_reminder_due_at, now),
     photoNames: getPhotoNames(record.metadata),
+    internalNotes: getInternalNotes(record.metadata).map((note) => ({
+      text: note.text,
+      createdAtLabel: formatCentralDateTime(note.createdAt),
+    })),
   };
 }

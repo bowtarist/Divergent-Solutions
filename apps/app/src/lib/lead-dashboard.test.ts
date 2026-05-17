@@ -24,12 +24,14 @@ test("normalizes a Supabase lead row into dashboard display fields", () => {
       call_reminder_due_at: "2026-05-15T22:00:00.000Z",
       metadata: {
         photoNames: ["front-before.jpg", "front-after.jpg"],
+        internalNotes: [{ text: "Left voicemail", createdAt: "2026-05-15T18:10:00.000Z" }],
       },
     },
     new Date("2026-05-15T23:00:00.000Z")
   );
 
   assert.equal(lead.id, "lead-123");
+  assert.equal(lead.status, "new");
   assert.equal(lead.name, "Brent Wilbanks");
   assert.equal(lead.phoneHref, "tel:+12562120232");
   assert.equal(lead.emailHref, "mailto:brent@example.com");
@@ -37,6 +39,8 @@ test("normalizes a Supabase lead row into dashboard display fields", () => {
   assert.equal(lead.callStatusLabel, "Open");
   assert.equal(lead.isCallDue, true);
   assert.equal(lead.photoNames.length, 2);
+  assert.equal(lead.internalNotes.length, 1);
+  assert.equal(lead.internalNotes[0]?.text, "Left voicemail");
 });
 
 test("uses safe fallbacks for incomplete lead rows", () => {
