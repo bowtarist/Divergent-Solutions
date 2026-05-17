@@ -10,12 +10,28 @@ export type LeadStatus = (typeof leadStatusOptions)[number]["value"];
 
 export type LeadCallStatus = "open" | "completed" | "dismissed";
 
+export const leadQualificationOptions = [
+  { value: "needs_site_visit", label: "Needs site visit" },
+  { value: "quote_remotely", label: "Quote remotely" },
+  { value: "ready_to_estimate", label: "Ready to estimate" },
+] as const;
+
+export type LeadQualification = (typeof leadQualificationOptions)[number]["value"];
+
 export type InternalNote = {
   text: string;
   createdAt: string;
 };
 
+export type LeadQualificationSnapshot = {
+  value: LeadQualification;
+  updatedAt: string;
+};
+
 const leadStatusValues = new Set<string>(leadStatusOptions.map((status) => status.value));
+const leadQualificationValues = new Set<string>(
+  leadQualificationOptions.map((qualification) => qualification.value)
+);
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -23,6 +39,12 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 export function parseLeadStatus(value: unknown): LeadStatus | null {
   return typeof value === "string" && leadStatusValues.has(value) ? (value as LeadStatus) : null;
+}
+
+export function parseLeadQualification(value: unknown): LeadQualification | null {
+  return typeof value === "string" && leadQualificationValues.has(value)
+    ? (value as LeadQualification)
+    : null;
 }
 
 export function createLeadStatusUpdate(status: LeadStatus): {
@@ -60,6 +82,21 @@ export function getInternalNotes(metadata: unknown): InternalNote[] {
     }));
 }
 
+export function getLeadQualification(metadata: unknown): LeadQualificationSnapshot | null {
+  if (!isRecord(metadata) || !isRecord(metadata.leadQualification)) {
+    return null;
+  }
+
+  const value = parseLeadQualification(metadata.leadQualification.value);
+  const updatedAt = metadata.leadQualification.updatedAt;
+
+  if (!value || typeof updatedAt !== "string") {
+    return null;
+  }
+
+  return { value, updatedAt };
+}
+
 export function addInternalNoteToMetadata(
   metadata: unknown,
   noteText: string,
@@ -81,5 +118,21 @@ export function addInternalNoteToMetadata(
       },
       ...getInternalNotes(metadata),
     ],
+  };
+}
+
+export function setLeadQualificationInMetadata(
+  metadata: unknown,
+  qualification: LeadQualification,
+  now = new Date()
+) {
+  const baseMetadata = isRecord(metadata) ? metadata : {};
+
+  return {
+    ...baseMetadata,
+    leadQualification: {
+      value: qualification,
+      updatedAt: now.toISOString(),
+    },
   };
 }

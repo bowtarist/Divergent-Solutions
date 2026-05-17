@@ -169,7 +169,8 @@ body {
 .dashboard-header h1,
 .empty-state h2,
 .lead-card h2,
-.lead-notes h3 {
+.lead-notes h3,
+.qualification-panel h3 {
   font-family: var(--font-serif), serif;
   letter-spacing: -0.03em;
 }
@@ -424,12 +425,39 @@ body {
   background: rgba(20, 35, 25, 0.045);
 }
 
-.lead-notes h3 {
+.lead-notes h3,
+.qualification-panel h3 {
   font-size: 1.25rem;
 }
 
 .lead-notes p {
   margin: 0.55rem 0 0;
+}
+
+.qualification-panel {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem;
+  border: 1px solid rgba(15, 122, 67, 0.16);
+  border-radius: 20px;
+  background: rgba(15, 122, 67, 0.055);
+}
+
+.qualification-panel h3,
+.qualification-panel p {
+  margin: 0;
+}
+
+.qualification-panel p {
+  margin-top: 0.35rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.qualification-form {
+  padding: 0;
+  border: 0;
+  background: transparent;
 }
 
 .muted {

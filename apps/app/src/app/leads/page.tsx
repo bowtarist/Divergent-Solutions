@@ -6,13 +6,17 @@ import {
   isValidDashboardSessionToken,
 } from "../../lib/dashboard-auth";
 import { normalizeLeadRecord, type DashboardLead } from "../../lib/lead-dashboard";
-import { leadStatusOptions } from "../../lib/lead-workflow";
+import { leadQualificationOptions, leadStatusOptions } from "../../lib/lead-workflow";
 import {
   createSupabaseLeadReader,
   LeadDashboardStorageError,
   MissingLeadIntakeStorageConfigError,
 } from "../../lib/supabase-server";
-import { addInternalNoteAction, updateLeadStatusAction } from "./actions";
+import {
+  addInternalNoteAction,
+  updateLeadQualificationAction,
+  updateLeadStatusAction,
+} from "./actions";
 
 export const dynamic = "force-dynamic";
 
@@ -82,6 +86,36 @@ function LeadCard({ lead }: { lead: DashboardLead }) {
           </button>
         ))}
       </form>
+
+      <section className="qualification-panel">
+        <div>
+          <h3>Estimate plan</h3>
+          <p>
+            {lead.qualificationLabel}
+            {lead.qualificationUpdatedAtLabel !== "Not recorded"
+              ? ` - updated ${lead.qualificationUpdatedAtLabel}`
+              : ""}
+          </p>
+        </div>
+        <form className="status-form qualification-form" action={updateLeadQualificationAction}>
+          <input type="hidden" name="leadId" value={lead.id} />
+          {leadQualificationOptions.map((qualification) => (
+            <button
+              key={qualification.value}
+              className={
+                lead.qualification === qualification.value
+                  ? "status-button status-button-active"
+                  : "status-button"
+              }
+              name="qualification"
+              type="submit"
+              value={qualification.value}
+            >
+              {qualification.label}
+            </button>
+          ))}
+        </form>
+      </section>
 
       <dl className="lead-details">
         <div>

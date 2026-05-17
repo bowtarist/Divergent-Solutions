@@ -3,8 +3,11 @@ import test from "node:test";
 import {
   addInternalNoteToMetadata,
   createLeadStatusUpdate,
+  getLeadQualification,
   getInternalNotes,
+  parseLeadQualification,
   parseLeadStatus,
+  setLeadQualificationInMetadata,
 } from "./lead-workflow";
 
 test("accepts only supported lead status values", () => {
@@ -57,4 +60,32 @@ test("ignores blank internal notes", () => {
   const metadata = addInternalNoteToMetadata({ photoNames: ["front.jpg"] }, "   ");
 
   assert.deepEqual(metadata, { photoNames: ["front.jpg"] });
+});
+
+test("accepts only supported lead qualification values", () => {
+  assert.equal(parseLeadQualification("needs_site_visit"), "needs_site_visit");
+  assert.equal(parseLeadQualification("quote_remotely"), "quote_remotely");
+  assert.equal(parseLeadQualification("ready_to_estimate"), "ready_to_estimate");
+  assert.equal(parseLeadQualification("not-real"), null);
+  assert.equal(parseLeadQualification(null), null);
+});
+
+test("sets lead qualification metadata without removing photos or notes", () => {
+  const metadata = setLeadQualificationInMetadata(
+    {
+      photoNames: ["front.jpg"],
+      internalNotes: [{ text: "Called once", createdAt: "2026-05-15T12:00:00.000Z" }],
+    },
+    "needs_site_visit",
+    new Date("2026-05-16T15:45:00.000Z")
+  );
+
+  assert.deepEqual((metadata as { photoNames: string[] }).photoNames, ["front.jpg"]);
+  assert.deepEqual(getInternalNotes(metadata), [
+    { text: "Called once", createdAt: "2026-05-15T12:00:00.000Z" },
+  ]);
+  assert.deepEqual(getLeadQualification(metadata), {
+    value: "needs_site_visit",
+    updatedAt: "2026-05-16T15:45:00.000Z",
+  });
 });

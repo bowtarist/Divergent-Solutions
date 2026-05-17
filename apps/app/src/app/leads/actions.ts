@@ -7,7 +7,7 @@ import {
   dashboardSessionCookieName,
   isValidDashboardSessionToken,
 } from "../../lib/dashboard-auth";
-import { parseLeadStatus } from "../../lib/lead-workflow";
+import { parseLeadQualification, parseLeadStatus } from "../../lib/lead-workflow";
 import { createSupabaseLeadWorkflowUpdater } from "../../lib/supabase-server";
 
 async function requireDashboardSession() {
@@ -50,5 +50,19 @@ export async function addInternalNoteAction(formData: FormData) {
   }
 
   await createSupabaseLeadWorkflowUpdater().addInternalNote(leadId, note);
+  revalidatePath("/leads");
+}
+
+export async function updateLeadQualificationAction(formData: FormData) {
+  await requireDashboardSession();
+
+  const leadId = getLeadId(formData);
+  const qualification = parseLeadQualification(formData.get("qualification"));
+
+  if (!leadId || !qualification) {
+    return;
+  }
+
+  await createSupabaseLeadWorkflowUpdater().updateLeadQualification(leadId, qualification);
   revalidatePath("/leads");
 }

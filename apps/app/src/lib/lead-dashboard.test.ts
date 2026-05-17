@@ -25,6 +25,10 @@ test("normalizes a Supabase lead row into dashboard display fields", () => {
       metadata: {
         photoNames: ["front-before.jpg", "front-after.jpg"],
         internalNotes: [{ text: "Left voicemail", createdAt: "2026-05-15T18:10:00.000Z" }],
+        leadQualification: {
+          value: "quote_remotely",
+          updatedAt: "2026-05-15T18:30:00.000Z",
+        },
       },
     },
     new Date("2026-05-15T23:00:00.000Z")
@@ -41,6 +45,9 @@ test("normalizes a Supabase lead row into dashboard display fields", () => {
   assert.equal(lead.photoNames.length, 2);
   assert.equal(lead.internalNotes.length, 1);
   assert.equal(lead.internalNotes[0]?.text, "Left voicemail");
+  assert.equal(lead.qualification, "quote_remotely");
+  assert.equal(lead.qualificationLabel, "Quote Remotely");
+  assert.notEqual(lead.qualificationUpdatedAtLabel, "Not recorded");
 });
 
 test("uses safe fallbacks for incomplete lead rows", () => {
@@ -72,6 +79,8 @@ test("uses safe fallbacks for incomplete lead rows", () => {
   assert.equal(lead.phoneHref, null);
   assert.equal(lead.emailHref, null);
   assert.equal(lead.statusLabel, "Unknown");
+  assert.equal(lead.qualification, null);
+  assert.equal(lead.qualificationLabel, "Review Needed");
   assert.equal(lead.submittedAtLabel, "Not recorded");
   assert.equal(lead.isCallDue, false);
 });

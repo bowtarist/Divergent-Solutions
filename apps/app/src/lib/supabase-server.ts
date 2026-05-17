@@ -4,6 +4,8 @@ import type { RawLeadRecord } from "./lead-dashboard";
 import {
   addInternalNoteToMetadata,
   createLeadStatusUpdate,
+  setLeadQualificationInMetadata,
+  type LeadQualification,
   type LeadStatus,
 } from "./lead-workflow";
 
@@ -189,6 +191,38 @@ export function createSupabaseLeadWorkflowUpdater(env?: LeadStorageEnv) {
 
       if (!updatedLead?.id) {
         throw new LeadDashboardStorageError("Lead note update did not return a lead id.");
+      }
+    },
+
+    async updateLeadQualification(leadId: string, qualification: LeadQualification) {
+      const { data, error: readError } = await supabase
+        .from("leads")
+        .select("metadata")
+        .eq("id", leadId)
+        .single();
+
+      if (readError) {
+        throw new LeadDashboardStorageError(readError.message);
+      }
+
+      const nextMetadata = setLeadQualificationInMetadata(
+        (data as { metadata?: unknown } | null)?.metadata,
+        qualification
+      );
+
+      const { data: updatedLead, error: updateError } = await supabase
+        .from("leads")
+        .update({ metadata: nextMetadata })
+        .eq("id", leadId)
+        .select("id")
+        .single();
+
+      if (updateError) {
+        throw new LeadDashboardStorageError(updateError.message);
+      }
+
+      if (!updatedLead?.id) {
+        throw new LeadDashboardStorageError("Lead qualification update did not return a lead id.");
       }
     },
   };

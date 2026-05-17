@@ -1,4 +1,10 @@
-import { getInternalNotes, parseLeadStatus, type LeadStatus } from "./lead-workflow";
+import {
+  getInternalNotes,
+  getLeadQualification,
+  parseLeadStatus,
+  type LeadQualification,
+  type LeadStatus,
+} from "./lead-workflow";
 
 const centralTimeZone = "America/Chicago";
 
@@ -33,6 +39,9 @@ export type DashboardLead = {
   emailHref: string | null;
   statusLabel: string;
   callStatusLabel: string;
+  qualification: LeadQualification | null;
+  qualificationLabel: string;
+  qualificationUpdatedAtLabel: string;
   sourceLabel: string;
   projectType: string;
   projectDescription: string;
@@ -138,6 +147,7 @@ function isCallDue(callReminderDueAt: string | null | undefined, now: Date) {
 export function normalizeLeadRecord(record: RawLeadRecord, now = new Date()): DashboardLead {
   const phone = record.phone?.trim() || null;
   const email = record.email?.trim() || null;
+  const qualification = getLeadQualification(record.metadata);
 
   return {
     id: record.id,
@@ -149,6 +159,11 @@ export function normalizeLeadRecord(record: RawLeadRecord, now = new Date()): Da
     emailHref: getEmailHref(email),
     statusLabel: toTitleLabel(record.status),
     callStatusLabel: toTitleLabel(record.call_status),
+    qualification: qualification?.value ?? null,
+    qualificationLabel: qualification ? toTitleLabel(qualification.value) : "Review Needed",
+    qualificationUpdatedAtLabel: qualification
+      ? formatCentralDateTime(qualification.updatedAt)
+      : "Not recorded",
     sourceLabel: toTitleLabel(record.source),
     projectType: valueOrFallback(record.project_type, "Project type not recorded"),
     projectDescription: valueOrFallback(record.project_description, "No project notes yet."),
