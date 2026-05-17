@@ -13,9 +13,22 @@ const serif = Newsreader({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.divergentsolutionsllc.com"),
   title: "Divergent Solutions | Quality Gutter Installation in Scottsboro, AL",
   description:
     "Licensed and insured gutter installation, repair, guards, fascia, soffit, siding, renovations, and new construction support across North Alabama, Tennessee, and Georgia.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Divergent Solutions | Quality Gutter Installation in Scottsboro, AL",
+    description:
+      "Licensed and insured gutter installation and exterior support across Scottsboro, Huntsville, Gadsden, Fort Payne, Winchester, and Trenton.",
+    url: "/",
+    siteName: "Divergent Solutions",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
